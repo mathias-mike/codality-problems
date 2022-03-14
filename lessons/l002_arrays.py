@@ -28,7 +28,7 @@ def rotate_array_v0(A, k):
 # O(n) time, O(n) space
 def rotate_array_v1(A, K):
     N = len(A)
-    if N == 0 or K == 0 or N == K:
+    if N == 0 or N == K:
         return A
     
     if K > N: K = K % N
@@ -101,7 +101,7 @@ class Queue:
 
 def rotate_array_v2(A, K):
     N = len(A)
-    if N == 0 or K == 0 or N == K:
+    if N == 0 or N == K:
         return A
     
     if K > N: K = K % N

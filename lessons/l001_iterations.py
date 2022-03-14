@@ -71,4 +71,4 @@ def binary_gap(N):
 
     return b_gap
 
-print(binary_gap(1041))
+print(star_triangle(5, 0))

@@ -162,6 +162,29 @@ def frog_river_crossing_v1(X, A):
     return -1
 
 
+# 0(n) better
+def solution(X, A):
+    expected_sum = (X * (X+1)) // 2
+    current_sum = 0
+
+    counter_array = [0] * (X+1)
+
+    earliest_crossing_time = -1
+
+    for i, element in enumerate(A):
+        if element <= X:
+            if counter_array[element] == 0:
+                counter_array[element] += 1
+                current_sum += element
+
+        if current_sum == expected_sum:
+            earliest_crossing_time = i
+            break
+
+    return earliest_crossing_time
+
+
+
 ''' A non-empty array A consisting of N integers is given.
 
     A permutation is a sequence containing each element from 1 to N once, and only once.
@@ -245,6 +268,24 @@ def perm_check_v2(A):
     else: return 0
 
 
+# Better
+def solution(A):
+    N = len(A)
+
+    counter_array = [0] * (N+1)
+
+    for element in A:
+        if element <= N:
+            if counter_array[element] == 0:
+                counter_array[element] += 1
+            elif counter_array[element] == 1:
+                return 0
+        else:
+            return 0
+        
+    return 1
+
+
 
 ''' You are given N counters, initially set to 0, and you have two possible operations on them:
 
@@ -282,19 +323,78 @@ def perm_check_v2(A):
 
     Result array should be returned as an array of integers.
 '''
-def max_counters(N, A):
-    M = len(A)
-    counter = [0] * N
-    max_counted = 0
+def solution(N, A):
+    counter_list = [0] * N
+    max_value = 0
 
-    for k in range(M):
-        if A[k] >= 1 and A[k] <= N:
-            counter[A[k] - 1] += 1
+    for element in A:
+        if element <= N:
+            counter_list[element -1] += 1
+            max_value = counter_list[element -1] if max_value < counter_list[element -1] else max_value
 
-            if max_counted < counter[A[k] - 1]: 
-                max_counted = counter[A[k] - 1]
+        else:
+            counter_list = [max_value] * N
 
-        if A[k] == N+1:
-            counter = [max_counted] * N
+    return counter_list
 
-    return counter
+
+# Faster
+def solution(N, A):
+    counter_base = 0
+    counter_list = [counter_base] * N
+    max_value = counter_base
+
+    for element in A:
+        if element <= N:
+            if counter_list[element - 1] < counter_base:
+                counter_list[element - 1] = counter_base
+
+            counter_list[element - 1] += 1
+            max_value = counter_list[element - 1] if max_value < counter_list[element - 1] else max_value
+
+        else: 
+            counter_base = max_value
+
+    for i, counts in enumerate(counter_list):
+        if counts < counter_base:
+            counter_list[i] = counter_base
+
+    return counter_list
+
+
+
+
+''' Write a function:
+
+    def solution(A)
+
+    that, given an array A of N integers, returns the smallest positive integer (greater than 0) that 
+    does not occur in A.
+
+    For example, given A = [1, 3, 6, 4, 1, 2], the function should return 5.
+
+    Given A = [1, 2, 3], the function should return 4.
+
+    Given A = [−1, −3], the function should return 1.
+
+    Write an efficient algorithm for the following assumptions:
+
+    N is an integer within the range [1..100,000];
+    each element of array A is an integer within the range [−1,000,000..1,000,000].
+'''
+def solution(A):
+    max_element = max(A)
+    pos_counter = [0] * (max_element+1)
+
+    for element in A:
+        if element > 0:
+            pos_counter[element] += 1
+
+    for element in range(1, max_element+1):
+        if pos_counter[element] == 0:
+            return element
+
+    if max_element <= 0:
+        return 1
+    else:
+        return max_element+1
