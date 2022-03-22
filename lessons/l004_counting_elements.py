@@ -384,14 +384,14 @@ def solution(N, A):
 '''
 def solution(A):
     max_element = max(A)
-    pos_counter = [0] * (max_element+1)
+    positive_counter = [0] * (max_element+1)
 
     for element in A:
         if element > 0:
-            pos_counter[element] += 1
+            positive_counter[element] += 1
 
     for element in range(1, max_element+1):
-        if pos_counter[element] == 0:
+        if positive_counter[element] == 0:
             return element
 
     if max_element <= 0:
